@@ -21,7 +21,11 @@ namespace azure_messaging_system.Helpers
             {
                 await managementClient.CreateQueueAsync(queueHelper.CreateQueueDescriptionObject(queueName));
             }
-            catch (Exception)
+            catch(MessagingEntityAlreadyExistsException entityAlreadyExist)
+            {
+
+            }
+            catch (Exception ex)
             {
                 throw;
             }
