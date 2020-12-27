@@ -16,7 +16,7 @@ namespace azure_messaging_system.Processor
                 await using (ServiceBusClient client = new ServiceBusClient(connectionString))
                 {
                     ServiceBusProcessor processor = client.CreateProcessor(queueName, new ServiceBusProcessorOptions()
-                    {
+                    { 
                         ReceiveMode = ServiceBusReceiveMode.PeekLock
                     });
 

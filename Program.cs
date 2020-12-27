@@ -10,8 +10,7 @@ namespace azure_messaging_system
     {
         private static string queueName = "demo-test";
         private static string connectionString = "";
-        
-        
+
         static async Task Main(string[] args)
         {
             Console.WriteLine("Welcome to Azure Service Bus Configuraton.");
@@ -22,9 +21,14 @@ namespace azure_messaging_system
             ServiceBusManagementHelper serviceMgmtHelper
                  = new ServiceBusManagementHelper(connectionString);
 
-            await serviceMgmtHelper.CreateQueue(queueName);
+            if (!await serviceMgmtHelper.DoesQueueExistsAsync(queueName))
+            {
+                await serviceMgmtHelper.CreateQueue(queueName);
+            }
 
             await p.SendMessageToQueue();
+
+            await p.ReceiveMessageFromQueue();
         }
 
 
@@ -39,7 +43,21 @@ namespace azure_messaging_system
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
 
+        private async Task ReceiveMessageFromQueue()
+        {
+            try
+            {
+                Receiver receiverObj
+                     = new Receiver();
+
+              await  receiverObj.ReceiveMessageAsync(connectionString, queueName);
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

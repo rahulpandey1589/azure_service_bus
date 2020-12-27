@@ -15,11 +15,11 @@ namespace azure_messaging_system.Helpers
             this.managementClient = new ManagementClient(connectionString);
         }
 
-        public async Task CreateQueue(string queueName)
+        public async Task CreateQueue(string queuePath)
         {
             try
             {
-                await managementClient.CreateQueueAsync(queueHelper.CreateQueueDescriptionObject(queueName));
+                await managementClient.CreateQueueAsync(queueHelper.CreateQueueDescriptionObject(queuePath));
             }
             catch(MessagingEntityAlreadyExistsException entityAlreadyExist)
             {
@@ -29,6 +29,11 @@ namespace azure_messaging_system.Helpers
             {
                 throw;
             }
+        }
+
+        public async Task<bool> DoesQueueExistsAsync(string queuePath)
+        {
+            return await managementClient.QueueExistsAsync(queuePath);
         }
     }
 }
